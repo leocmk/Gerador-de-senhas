@@ -21,6 +21,17 @@ export const PasswordGenerator: React.FC<IPasswordGeneratorProps> = ({
   const [isGenerating, setIsGenerating] = useState(false);
   const [notification, setNotification] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
 
+  console.log('[PasswordGenerator] Estado inicial:', {
+    length,
+    count,
+    includeLowercase,
+    includeUppercase,
+    includeNumbers,
+    includeSymbols,
+    passwords: passwords.length,
+    isGenerating
+  });
+
   const passwordsContainerRef = useRef<HTMLDivElement>(null);
 
   const showNotification = (message: string, type: 'success' | 'error' = 'success'): void => {
@@ -29,6 +40,14 @@ export const PasswordGenerator: React.FC<IPasswordGeneratorProps> = ({
   };
 
   const generatePassword = (passwordLength: number): string => {
+    console.log('[PasswordGenerator:generatePassword] Gerando senha com comprimento:', passwordLength);
+    console.log('[PasswordGenerator:generatePassword] Opções selecionadas:', {
+      includeLowercase,
+      includeUppercase,
+      includeNumbers,
+      includeSymbols
+    });
+    
     if (passwordLength < 4) {
       throw new Error('O comprimento da senha deve ser de pelo menos 4 caracteres.');
     }
@@ -93,6 +112,16 @@ export const PasswordGenerator: React.FC<IPasswordGeneratorProps> = ({
   };
 
   const handleGenerate = async (): Promise<void> => {
+    console.log('[PasswordGenerator:handleGenerate] Iniciando geração de senhas');
+    console.log('[PasswordGenerator:handleGenerate] Configurações:', {
+      length,
+      count,
+      includeLowercase,
+      includeUppercase,
+      includeNumbers,
+      includeSymbols
+    });
+    
     try {
       setIsGenerating(true);
       
@@ -100,9 +129,11 @@ export const PasswordGenerator: React.FC<IPasswordGeneratorProps> = ({
       for (let i = 0; i < count; i++) {
         const password = generatePassword(length);
         generatedPasswords.push(password);
+        console.log(`[PasswordGenerator:handleGenerate] Senha ${i + 1} gerada:`, password);
       }
 
       setPasswords(generatedPasswords);
+      console.log('[PasswordGenerator:handleGenerate] Senhas geradas com sucesso:', generatedPasswords);
       
       // Scroll para a seção de resultados
       setTimeout(() => {
@@ -110,6 +141,7 @@ export const PasswordGenerator: React.FC<IPasswordGeneratorProps> = ({
       }, 100);
 
     } catch (error) {
+      console.error('[PasswordGenerator:handleGenerate] Erro ao gerar senhas:', error);
       showNotification(error instanceof Error ? error.message : 'Erro ao gerar senhas', 'error');
     } finally {
       setIsGenerating(false);
