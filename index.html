@@ -1,113 +1,33 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerador de Senhas Seguras</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gerador de Senhas Seguras</title>
+  <meta name="description" content="Gere senhas seguras e complexas para proteger suas contas online. Sistema moderno com autenticação e recuperação de senha." />
+  <meta name="keywords" content="gerador de senhas, senhas seguras, segurança, autenticação, criptografia" />
+  <meta name="author" content="Gerador de Senhas Seguras" />
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Gerador de Senhas Seguras" />
+  <meta property="og:description" content="Gere senhas seguras e complexas para proteger suas contas online." />
+  
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image" />
+  <meta property="twitter:title" content="Gerador de Senhas Seguras" />
+  <meta property="twitter:description" content="Gere senhas seguras e complexas para proteger suas contas online." />
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🔐%3C/text%3E%3C/svg%3E" />
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="container">
-        <header class="header">
-            <h1 class="title">Gerador de Senhas Seguras</h1>
-            <p class="subtitle">Crie senhas fortes e seguras para proteger suas contas</p>
-        </header>
-
-        <main class="main-content">
-            <div class="generator-card">
-                <div class="form-section">
-                    <div class="input-group">
-                        <label for="password-length" class="label">Comprimento da senha:</label>
-                        <div class="input-with-slider">
-                            <input 
-                                type="range" 
-                                id="password-length" 
-                                min="4" 
-                                max="50" 
-                                value="12" 
-                                class="slider"
-                            >
-                            <span class="length-display" id="length-display">12</span>
-                        </div>
-                    </div>
-
-                    <div class="input-group">
-                        <label for="password-count" class="label">Quantidade de senhas:</label>
-                        <input 
-                            type="number" 
-                            id="password-count" 
-                            min="1" 
-                            max="20" 
-                            value="1" 
-                            class="number-input"
-                        >
-                    </div>
-
-                    <div class="options-section">
-                        <h3 class="options-title">Opções de caracteres:</h3>
-                        <div class="checkbox-group">
-                            <label class="checkbox-label">
-                                <input type="checkbox" id="include-lowercase" checked>
-                                <span class="checkmark"></span>
-                                Minúsculas (a-z)
-                            </label>
-                            <label class="checkbox-label">
-                                <input type="checkbox" id="include-uppercase" checked>
-                                <span class="checkmark"></span>
-                                Maiúsculas (A-Z)
-                            </label>
-                            <label class="checkbox-label">
-                                <input type="checkbox" id="include-numbers" checked>
-                                <span class="checkmark"></span>
-                                Números (0-9)
-                            </label>
-                            <label class="checkbox-label">
-                                <input type="checkbox" id="include-symbols" checked>
-                                <span class="checkmark"></span>
-                                Símbolos (!@#$%...)
-                            </label>
-                        </div>
-                    </div>
-
-                    <button id="generate-btn" class="generate-btn">
-                        <span class="btn-text">Gerar Senhas</span>
-                        <span class="btn-icon">🔐</span>
-                    </button>
-                </div>
-
-                <div class="results-section" id="results-section" style="display: none;">
-                    <h3 class="results-title">Senhas Geradas:</h3>
-                    <div class="passwords-container" id="passwords-container">
-                        <!-- Senhas serão inseridas aqui via JavaScript -->
-                    </div>
-                    <button id="copy-all-btn" class="copy-all-btn">
-                        <span class="btn-text">Copiar Todas</span>
-                        <span class="btn-icon">📋</span>
-                    </button>
-                </div>
-            </div>
-
-            <div class="info-section">
-                <h3 class="info-title">Dicas de Segurança:</h3>
-                <ul class="tips-list">
-                    <li>Use pelo menos 12 caracteres para maior segurança</li>
-                    <li>Combine diferentes tipos de caracteres</li>
-                    <li>Não reutilize senhas entre diferentes contas</li>
-                    <li>Use um gerenciador de senhas para armazenar com segurança</li>
-                    <li>Ative autenticação de dois fatores quando possível</li>
-                </ul>
-            </div>
-        </main>
-
-        <footer class="footer">
-            <p>&copy; 2024 Gerador de Senhas Seguras. Desenvolvido com segurança em mente.</p>
-        </footer>
-    </div>
-
-    <div class="notification" id="notification">
-        <span class="notification-text" id="notification-text"></span>
-    </div>
-
-    <script src="script.js"></script>
+  <div id="root"></div>
+  <script type="module" src="/src/main.tsx"></script>
 </body>
 </html>
