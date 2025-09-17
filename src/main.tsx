@@ -1,7 +1,7 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import { HomePage } from './pages/HomePage';
-import './styles/globals.css';
+import { LandingPage } from './pages/LandingPage';
+import './styles/globals-futuristic.css';
 
 const container = document.getElementById('root');
 if (!container) {
@@ -12,6 +12,6 @@ const root = createRoot(container);
 
 root.render(
   <React.StrictMode>
-    <HomePage />
+    <LandingPage />
   </React.StrictMode>
 );
