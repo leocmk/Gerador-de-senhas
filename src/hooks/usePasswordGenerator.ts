@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { generatePassword } from '../lib/password.utils';
+import { usePasswordHistory } from './usePasswordHistory';
 import type { INotification } from '../types/app.types';
 
 export const usePasswordGenerator = () => {
@@ -12,6 +13,14 @@ export const usePasswordGenerator = () => {
   const [passwords, setPasswords] = useState<string[]>([]);
   const [isGenerating, setIsGenerating] = useState(false);
   const [notification, setNotification] = useState<INotification | null>(null);
+  
+  const {
+    history,
+    addToHistory,
+    clearHistory,
+    removeFromHistory,
+    getRecentHistory,
+  } = usePasswordHistory();
 
   const showNotification = (message: string, type: 'success' | 'error' = 'success'): void => {
     setNotification({ message, type });
@@ -34,6 +43,17 @@ export const usePasswordGenerator = () => {
       }
 
       setPasswords(generatedPasswords);
+      
+      // Adicionar senhas ao histórico
+      generatedPasswords.forEach(password => {
+        addToHistory(password, {
+          length,
+          includeLowercase,
+          includeUppercase,
+          includeNumbers,
+          includeSymbols,
+        });
+      });
     } catch (error) {
       showNotification(error instanceof Error ? error.message : 'Erro ao gerar senhas', 'error');
     } finally {
@@ -73,6 +93,7 @@ export const usePasswordGenerator = () => {
     passwords,
     isGenerating,
     notification,
+    history,
     
     // Setters
     setLength,
@@ -87,5 +108,8 @@ export const usePasswordGenerator = () => {
     copyPassword,
     copyAllPasswords,
     showNotification,
+    clearHistory,
+    removeFromHistory,
+    getRecentHistory,
   };
 };

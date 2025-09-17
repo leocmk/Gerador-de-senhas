@@ -24,3 +24,16 @@ export interface INotification {
   message: string;
   type: 'success' | 'error';
 }
+
+export interface IPasswordHistoryEntry {
+  id: string;
+  password: string;
+  timestamp: Date;
+  length: number;
+  settings: {
+    includeLowercase: boolean;
+    includeUppercase: boolean;
+    includeNumbers: boolean;
+    includeSymbols: boolean;
+  };
+}

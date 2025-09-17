@@ -18,6 +18,7 @@ export const PasswordGeneratorPage: React.FC<IPasswordGeneratorProps> = ({
     passwords,
     isGenerating,
     notification,
+    history,
     setLength,
     setCount,
     setIncludeLowercase,
@@ -27,6 +28,8 @@ export const PasswordGeneratorPage: React.FC<IPasswordGeneratorProps> = ({
     handleGenerate,
     copyPassword,
     copyAllPasswords,
+    clearHistory,
+    removeFromHistory,
   } = usePasswordGenerator();
 
   // Scroll para resultados após gerar
@@ -257,6 +260,66 @@ export const PasswordGeneratorPage: React.FC<IPasswordGeneratorProps> = ({
                 <span className="button-text">Copiar Todas</span>
                 <span className="copy-icon">📋</span>
               </button>
+            </div>
+          )}
+
+          {history.length > 0 && (
+            <div className="history-section">
+              <div className="history-header">
+                <h3 className="history-title">Histórico de Senhas</h3>
+                <button 
+                  className="clear-history-button"
+                  onClick={clearHistory}
+                  title="Limpar todo o histórico"
+                >
+                  <span className="clear-icon">🗑️</span>
+                  Limpar Histórico
+                </button>
+              </div>
+              <div className="history-container">
+                {history.slice(0, 20).map((entry) => (
+                  <div key={entry.id} className="history-item">
+                    <div className="history-content">
+                      <span className="history-password">{entry.password}</span>
+                      <div className="history-meta">
+                        <span className="history-timestamp">
+                          {entry.timestamp.toLocaleString('pt-BR')}
+                        </span>
+                        <span className="history-length">
+                          {entry.length} caracteres
+                        </span>
+                        <div className="history-settings">
+                          {entry.settings.includeLowercase && <span className="setting-tag">a-z</span>}
+                          {entry.settings.includeUppercase && <span className="setting-tag">A-Z</span>}
+                          {entry.settings.includeNumbers && <span className="setting-tag">0-9</span>}
+                          {entry.settings.includeSymbols && <span className="setting-tag">!@#</span>}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="history-actions">
+                      <button
+                        className="history-copy-button"
+                        onClick={() => copyPassword(entry.password)}
+                        title="Copiar senha"
+                      >
+                        <span className="copy-icon">📋</span>
+                      </button>
+                      <button
+                        className="history-remove-button"
+                        onClick={() => removeFromHistory(entry.id)}
+                        title="Remover do histórico"
+                      >
+                        <span className="remove-icon">❌</span>
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              {history.length > 20 && (
+                <div className="history-more">
+                  <span>Mostrando 20 de {history.length} entradas</span>
+                </div>
+              )}
             </div>
           )}
         </div>
