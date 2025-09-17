@@ -1,131 +1,42 @@
-import React, { useState, useRef } from 'react';
-import { VideoBackground } from '../components/VideoBackground';
+import React, { useRef } from 'react';
+import { VideoBackground } from '../shared/VideoBackground';
+import { usePasswordGenerator } from '../hooks/usePasswordGenerator';
+import type { IPasswordGeneratorProps } from '../types/app.types';
 
-interface IPasswordGeneratorPageProps {
-  onBack: () => void;
-}
-
-export const PasswordGeneratorPage: React.FC<IPasswordGeneratorPageProps> = ({
+export const PasswordGeneratorPage: React.FC<IPasswordGeneratorProps> = ({
   onBack,
 }) => {
-  const [length, setLength] = useState(12);
-  const [count, setCount] = useState(1);
-  const [includeLowercase, setIncludeLowercase] = useState(true);
-  const [includeUppercase, setIncludeUppercase] = useState(true);
-  const [includeNumbers, setIncludeNumbers] = useState(true);
-  const [includeSymbols, setIncludeSymbols] = useState(true);
-  const [passwords, setPasswords] = useState<string[]>([]);
-  const [isGenerating, setIsGenerating] = useState(false);
-  const [notification, setNotification] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
-
   const passwordsContainerRef = useRef<HTMLDivElement>(null);
+  
+  const {
+    length,
+    count,
+    includeLowercase,
+    includeUppercase,
+    includeNumbers,
+    includeSymbols,
+    passwords,
+    isGenerating,
+    notification,
+    setLength,
+    setCount,
+    setIncludeLowercase,
+    setIncludeUppercase,
+    setIncludeNumbers,
+    setIncludeSymbols,
+    handleGenerate,
+    copyPassword,
+    copyAllPasswords,
+  } = usePasswordGenerator();
 
-  const showNotification = (message: string, type: 'success' | 'error' = 'success'): void => {
-    setNotification({ message, type });
-    setTimeout(() => setNotification(null), 3000);
-  };
-
-  const generatePassword = (passwordLength: number): string => {
-    if (passwordLength < 4) {
-      throw new Error('O comprimento da senha deve ser de pelo menos 4 caracteres.');
-    }
-
-    if (!includeLowercase && !includeUppercase && !includeNumbers && !includeSymbols) {
-      throw new Error('Selecione pelo menos um tipo de caractere.');
-    }
-
-    const charSets = {
-      lowercase: 'abcdefghijklmnopqrstuvwxyz',
-      uppercase: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
-      numbers: '0123456789',
-      symbols: '!@#$%^&*()_+-=[]{}|;:,.<>?',
-    };
-
-    let availableChars = '';
-    let requiredChars: string[] = [];
-
-    if (includeLowercase) {
-      availableChars += charSets.lowercase;
-      requiredChars.push(getRandomChar(charSets.lowercase));
-    }
-    if (includeUppercase) {
-      availableChars += charSets.uppercase;
-      requiredChars.push(getRandomChar(charSets.uppercase));
-    }
-    if (includeNumbers) {
-      availableChars += charSets.numbers;
-      requiredChars.push(getRandomChar(charSets.numbers));
-    }
-    if (includeSymbols) {
-      availableChars += charSets.symbols;
-      requiredChars.push(getRandomChar(charSets.symbols));
-    }
-
-    const password = [...requiredChars];
-
-    for (let i = requiredChars.length; i < passwordLength; i++) {
-      password.push(getRandomChar(availableChars));
-    }
-
-    return shuffleArray(password).join('');
-  };
-
-  const getRandomChar = (charSet: string): string => {
-    return charSet[Math.floor(Math.random() * charSet.length)];
-  };
-
-  const shuffleArray = (array: string[]): string[] => {
-    const shuffled = [...array];
-    for (let i = shuffled.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-    }
-    return shuffled;
-  };
-
-  const handleGenerate = async (): Promise<void> => {
-    try {
-      setIsGenerating(true);
-      
-      const generatedPasswords: string[] = [];
-      for (let i = 0; i < count; i++) {
-        const password = generatePassword(length);
-        generatedPasswords.push(password);
-      }
-
-      setPasswords(generatedPasswords);
-      
+  // Scroll para resultados após gerar
+  React.useEffect(() => {
+    if (passwords.length > 0) {
       setTimeout(() => {
         passwordsContainerRef.current?.scrollIntoView({ behavior: 'smooth' });
       }, 100);
-
-    } catch (error) {
-      showNotification(error instanceof Error ? error.message : 'Erro ao gerar senhas', 'error');
-    } finally {
-      setIsGenerating(false);
     }
-  };
-
-  const copyPassword = async (password: string): Promise<void> => {
-    try {
-      await navigator.clipboard.writeText(password);
-      showNotification('Senha copiada para a área de transferência!');
-    } catch (error) {
-      console.error('[PasswordGenerator:copyPassword] Erro ao copiar senha:', error);
-      showNotification('Erro ao copiar senha. Tente novamente.', 'error');
-    }
-  };
-
-  const copyAllPasswords = async (): Promise<void> => {
-    try {
-      const allPasswordsText = passwords.join('\n');
-      await navigator.clipboard.writeText(allPasswordsText);
-      showNotification(`${passwords.length} senhas copiadas para a área de transferência!`);
-    } catch (error) {
-      console.error('[PasswordGenerator:copyAllPasswords] Erro ao copiar senhas:', error);
-      showNotification('Erro ao copiar senhas. Tente novamente.', 'error');
-    }
-  };
+  }, [passwords]);
 
   return (
     <div className="generator-page-container">

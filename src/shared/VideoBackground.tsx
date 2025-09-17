@@ -1,14 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
-
-interface IVideoBackgroundProps {
-  videoPath?: string;
-  fallbackColors?: {
-    primary: string;
-    secondary: string;
-    accent: string;
-  };
-  onColorsExtracted?: (colors: any) => void;
-}
+import type { IVideoBackgroundProps, IColorPalette } from '../types/app.types';
 
 export const VideoBackground: React.FC<IVideoBackgroundProps> = ({
   videoPath = '/videos/background.mp4',

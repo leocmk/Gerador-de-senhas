@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { PasswordGeneratorPage } from './PasswordGeneratorPage';
-import { VideoBackground } from '../components/VideoBackground';
+import { VideoBackground } from '../shared/VideoBackground';
 
 export const LandingPage: React.FC = () => {
   const [showGenerator, setShowGenerator] = useState(false);
