@@ -23,7 +23,7 @@ export const VideoBackground: React.FC<IVideoBackgroundProps> = ({
   const [videoLoaded, setVideoLoaded] = useState(false);
   const [videoError, setVideoError] = useState<string | null>(null);
   
-  const colors = null;
+  const colors = null as any;
   const isLoading = false;
   const error = null;
 
@@ -74,6 +74,7 @@ export const VideoBackground: React.FC<IVideoBackgroundProps> = ({
               loop
               playsInline
               preload="auto"
+              // @ts-ignore
               playbackRate={1.5}
               onLoadedData={handleVideoLoad}
               onError={handleVideoError}
@@ -157,29 +158,7 @@ export const VideoBackground: React.FC<IVideoBackgroundProps> = ({
         </div>
       )}
 
-      {/* Debug info (apenas em desenvolvimento) */}
-      {import.meta.env.MODE === 'development' && colors && (
-        <div className="video-debug">
-          <h4>Cores Extraídas:</h4>
-          <div className="color-preview">
-            <div 
-              className="color-swatch" 
-              style={{ backgroundColor: colors.primary }}
-              title={`Primary: ${colors.primary}`}
-            />
-            <div 
-              className="color-swatch" 
-              style={{ backgroundColor: colors.secondary }}
-              title={`Secondary: ${colors.secondary}`}
-            />
-            <div 
-              className="color-swatch" 
-              style={{ backgroundColor: colors.accent }}
-              title={`Accent: ${colors.accent}`}
-            />
-          </div>
-        </div>
-      )}
+      {/* Debug info removido para simplificar */}
     </div>
   );
 };
